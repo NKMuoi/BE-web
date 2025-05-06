@@ -1,6 +1,6 @@
 package com.lazycode.lazyhotel.response;
 
-import com.lazycode.lazyhotel.model.Room;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -37,17 +37,17 @@ public class BookingResponse {
 
     private int totalNumOfGuests;
 
-    private String bookingConfiramtionCode;
+    private String bookingConfirmationCode;
 
     private RoomResponse room;
 
     public BookingResponse(Long bookingId, LocalDate checkInDate,
                            LocalDate checkOutDate,
-                           String bookingConfiramtionCode) {
+                           String bookingConfirmationCode) {
         this.bookingId = bookingId;
         this.checkInDate = checkInDate;
         this.checkOutDate = checkOutDate;
-        this.bookingConfiramtionCode = bookingConfiramtionCode;
+        this.bookingConfirmationCode = bookingConfirmationCode;
     }
 
 

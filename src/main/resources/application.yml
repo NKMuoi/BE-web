@@ -5,7 +5,7 @@ spring:
   datasource:
     username: 3gAUnurhbonGF6J.root
     password: wkyz6KBSaqadDzec
-    url: gateway01.ap-southeast-1.prod.aws.tidbcloud.com
+    url: jdbc:mysql://3gAUnurhbonGF6J.root:wkyz6KBSaqadDzec@gateway01.ap-southeast-1.prod.aws.tidbcloud.com:4000/test?useSSL=true&requireSSL=true&verifyServerCertificate=true&enabledTLSProtocols=TLSv1.2
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     show-sql: true
