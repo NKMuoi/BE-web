@@ -1,11 +1,11 @@
 server:
-  port: 8080
+  port: 4000
 
 spring:
   datasource:
-    username: lazyuser
-    password: admin
-    url: jdbc:mysql://localhost:3306/lazy_hotel_db
+    username: 3gAUnurhbonGF6J.root
+    password: wkyz6KBSaqadDzec
+    url: gateway01.ap-southeast-1.prod.aws.tidbcloud.com
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     show-sql: true
