@@ -1,25 +1,13 @@
-# -------- Build Stage --------
-    FROM eclipse-temurin:21-jdk AS build
+# Sử dụng hình ảnh Maven với OpenJDK 21
+FROM maven:3.9.4-eclipse-temurin-21 AS build
+WORKDIR /app
+COPY . .
+RUN chmod +x ./mvnw
+RUN ./mvnw clean package -DskipTests
 
-    WORKDIR /app
-    
-    # Copy project files into the container
-    COPY . .
-    
-    # Build the project with Maven
-    RUN chmod +x ./mvnw && ./mvnw clean package -DskipTests
-    
-    # -------- Run Stage --------
-    FROM eclipse-temurin:21-jdk
-    
-    WORKDIR /app
-    
-    # Copy the built jar file from the build stage
-    COPY --from=build /app/target/Lazy-Hotel-0.0.1-SNAPSHOT.jar app.jar
-    
-    # Expose the port on which the app will run (default Spring Boot port)
-    EXPOSE 8080
-    
-    # Set the entrypoint to run the Spring Boot application
-    ENTRYPOINT ["java", "-jar", "app.jar"]
-    
+# Sử dụng hình ảnh OpenJDK 21 cho runtime
+FROM eclipse-temurin:21-jdk
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
+EXPOSE 8080
+CMD ["java", "-jar", "app.jar"]
