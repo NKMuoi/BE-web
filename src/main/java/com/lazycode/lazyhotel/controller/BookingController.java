@@ -41,7 +41,7 @@ public class BookingController {
 
 
 
-    @GetMapping("/confirmation/{confirmationCode")
+    @GetMapping("/confirmation/{confirmationCode}")
     public ResponseEntity<?> getBookingByConfirmationCode(@PathVariable String confirmationCode){
         try{
             BookedRoom booking = bookingService.findingByBookingConfirmationCode(confirmationCode);
@@ -73,7 +73,7 @@ public class BookingController {
 
 
     private BookingResponse getBookingResponse(BookedRoom booking) {
-        Room theRoom = roomService.getRoomById(booking.getRoom().getId()).get();
+        Room theRoom = roomService.getRoomById(booking.getRoom().getId()).orElseThrow(() -> new ResourceNotFoundException("Room not found"));
         RoomResponse room = new RoomResponse(theRoom.getId(), theRoom.getRoomType(), theRoom.getRoomPrice());
         return new BookingResponse(booking.getBookingId(), booking.getCheckInDate(), booking.getCheckOutDate(),
                 booking.getGuestFullName(), booking.getGuestEmail(), booking.getNumOfAdults(),
