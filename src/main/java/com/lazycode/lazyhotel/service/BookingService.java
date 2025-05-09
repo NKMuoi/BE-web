@@ -2,6 +2,7 @@ package com.lazycode.lazyhotel.service;
 
 
 import com.lazycode.lazyhotel.exception.InvalidBookingRequestException;
+import com.lazycode.lazyhotel.exception.ResourceNotFoundException;
 import com.lazycode.lazyhotel.model.BookedRoom;
 import com.lazycode.lazyhotel.model.Room;
 import com.lazycode.lazyhotel.repository.BookingRepository;
@@ -68,7 +69,8 @@ public class BookingService implements IBookingService {
 
     @Override
     public BookedRoom findingByBookingConfirmationCode(String confirmationCode) {
-        return bookingRepository.findByBookingConfirmationCode(confirmationCode);
+        return bookingRepository.findByBookingConfirmationCode(confirmationCode).orElseThrow(() -> new ResourceNotFoundException("No booking found with booking code:" + confirmationCode));
+
     }
 
     @Override

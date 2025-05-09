@@ -2,7 +2,7 @@ package com.lazycode.lazyhotel.response;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.tomcat.util.codec.binary.Base64;
+import java.util.Base64;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -29,7 +29,7 @@ public class RoomResponse {
         this.roomType = roomType;
         this.roomPrice = roomPrice;
         this.isBooked = isBooked;
-        this.photo = photoBytes != null ? Base64.encodeBase64String(photoBytes) : null;
+        this.photo = photoBytes != null ? Base64.getEncoder().encodeToString(photoBytes) : null;
         this.bookings = bookings;
     }
 }
