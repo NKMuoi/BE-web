@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @RequiredArgsConstructor
+@RequestMapping("/auth")
 public class AuthController {
     private final IUserService userService;
 
