@@ -49,7 +49,12 @@ public class JwtUtils {
     }
 
     private SecretKey key() {
-        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
+        SecretKey secretKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
+
+        // Log giá trị của key để kiểm tra
+        logger.info("Generated SecretKey: {}", secretKey);
+    
+        return secretKey;
     }
     public String getUserNameFromToken(String token){
         return Jwts.parser()
@@ -57,21 +62,25 @@ public class JwtUtils {
                 .build()
                 .parseSignedClaims(token).getPayload().getSubject();
     }
-    public boolean validateToken(String token){
-        try{
-            Jwts.parser().verifyWith(key()).build().parseSignedClaims(token);
-            return true;
-        }catch(MalformedJwtException e){
-            logger.error("Invalid jwt token : {} ", e.getMessage());
-        }catch (ExpiredJwtException e){
-            logger.error("Expired token : {} ", e.getMessage());
-        }catch (UnsupportedJwtException e){
-            logger.error("This token is not supported : {} ", e.getMessage());
-        }catch (IllegalArgumentException e){
-            logger.error("No  claims found : {} ", e.getMessage());
-        }
-        return false;
-    }
+   public boolean validateToken(String token) {
+    try {
+        Jws<Claims> claims = Jwts.parserBuilder()  // Thay đổi từ parser() sang parserBuilder()
+                .setSigningKey(key())  // Đặt khóa ký
+                .build()
+                .parseClaimsJws(token);  // Giải mã token
 
+        // Kiểm tra xem token có hết hạn hay không
+        return !claims.getBody().getExpiration().before(new Date());
+    } catch (MalformedJwtException e) {
+        logger.error("Invalid JWT token: {}", e.getMessage());
+    } catch (ExpiredJwtException e) {
+        logger.error("Expired JWT token: {}", e.getMessage());
+    } catch (UnsupportedJwtException e) {
+        logger.error("Unsupported JWT token: {}", e.getMessage());
+    } catch (IllegalArgumentException e) {
+        logger.error("JWT token is empty: {}", e.getMessage());
+    }
+    return false;
+}
 
 }
