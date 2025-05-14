@@ -19,3 +19,17 @@ spring:
       max-file-size: 5MB
       max-request-size: 5MB
       file-size-threshold: 2KB
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
+
+security:
+  jwt:
+    secret: a2Nmd2Rrb2x0Y25mc2tvZnNkbmZ3ZGxubGRoZ3M=
+    jwtExpirationInMils: 3600000
