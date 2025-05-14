@@ -13,9 +13,11 @@ public class SecurityConfig {
         http
             .csrf().disable()
             .authorizeHttpRequests()
-                .requestMatchers("/auth/**").permitAll()
-                .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll() // Cho phép OPTIONS
-                .anyRequest().authenticated()
+                .requestMatchers("/auth/**").permitAll()       // ✅ Public
+                .requestMatchers("/rooms/**").permitAll()      // ✅ Public
+                .requestMatchers("/admin/**").authenticated()  // 🔐 Yêu cầu xác thực
+                .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll() // Cho phép preflight request
+                .anyRequest().permitAll() // ✅ Những route khác cũng public (nếu muốn)
             .and()
             .formLogin().disable()
             .httpBasic().disable();
@@ -23,3 +25,4 @@ public class SecurityConfig {
         return http.build();
     }
 }
+
