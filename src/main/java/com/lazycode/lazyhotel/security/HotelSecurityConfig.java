@@ -58,7 +58,8 @@ public class HotelSecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**", "/rooms/**", "/bookings/**")
-                        .permitAll().requestMatchers("/roles/**").hasRole("ADMIN")
+                        .permitAll().requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers("/roles/**").hasRole("ADMIN")
                         .anyRequest().authenticated());
         http.authenticationProvider(authenticationProvider());
         http.addFilterBefore(authenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
