@@ -1,5 +1,6 @@
 package com.lazycode.lazyhotel.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,6 +25,7 @@ public class Role {
 
 
     @ManyToMany(mappedBy = "roles")
+    @JsonIgnore
     private Collection<User> users = new HashSet<>();
 
     public Role(String name) {
