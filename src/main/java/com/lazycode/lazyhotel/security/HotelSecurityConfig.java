@@ -76,8 +76,7 @@ public class HotelSecurityConfig {
             .exceptionHandling(exception -> exception.authenticationEntryPoint(jwtAuthEntryPoint))
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/auth/**", "/rooms/**", "/bookings/**").permitAll()
-                .requestMatchers("/api/roles/**").hasRole("ADMIN")
+                .requestMatchers("/auth/**", "/rooms/**", "/bookings/**","/api/roles/**","/users/**").permitAll()
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .anyRequest().authenticated());
 
