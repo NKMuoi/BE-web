@@ -10,6 +10,7 @@
     import org.springframework.security.core.userdetails.UsernameNotFoundException;
     import org.springframework.security.crypto.password.PasswordEncoder;
     import org.springframework.stereotype.Service;
+    import jakarta.annotation.PostConstruct;
 
     import java.util.Collections;
     import java.util.List;
@@ -35,6 +36,16 @@
             user.setRoles(Collections.singletonList(userRole));
             return userRepository.save(user);
         }
+
+        @PostConstruct
+        public void initDefaultRoles() {
+            if (roleRepository.findByName("ROLE_USER").isEmpty()) {
+                Role roleUser = new Role();
+                roleUser.setName("ROLE_USER");
+                roleRepository.save(roleUser);
+            }
+        }
+
 
         @Override
         public List<User> getUsers() {
