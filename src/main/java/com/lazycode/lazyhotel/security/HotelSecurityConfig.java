@@ -52,27 +52,17 @@ public class HotelSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf(AbstractHttpConfigurer::disable)
-                .exceptionHandling(exception -> exception.authenticationEntryPoint(jwtAuthEntryPoint))
+        http.csrf(AbstractHttpConfigurer::disable)
+                .exceptionHandling(
+                        exception -> exception.authenticationEntryPoint(jwtAuthEntryPoint))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**", "/rooms/**", "/bookings/**").permitAll()
-                        .requestMatchers("/roles/**").hasRole("ADMIN")
-                        .requestMatchers("/admin/**").authenticated()
-                        .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
-                        .anyRequest().permitAll()
-                )
-                .authenticationProvider(authenticationProvider())
-                .addFilterBefore(authenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class)
-                .formLogin(AbstractHttpConfigurer::disable)
-                .httpBasic(AbstractHttpConfigurer::disable);
-
+                        .requestMatchers("/auth/**", "/rooms/**", "/bookings/**")
+                        .permitAll().requestMatchers("/roles/**").hasRole("ADMIN")
+                        .anyRequest().authenticated());
+        http.authenticationProvider(authenticationProvider());
+        http.addFilterBefore(authenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
-
-
-
-
 
 }

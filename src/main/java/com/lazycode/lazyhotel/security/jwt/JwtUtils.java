@@ -49,7 +49,12 @@ public class JwtUtils {
     }
 
     private SecretKey key() {
-        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
+        SecretKey secretKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
+
+        // Log giá trị của key để kiểm tra
+        logger.info("Generated SecretKey: {}", secretKey);
+    
+        return secretKey;
     }
     public String getUserNameFromToken(String token){
         return Jwts.parser()
@@ -57,7 +62,7 @@ public class JwtUtils {
                 .build()
                 .parseSignedClaims(token).getPayload().getSubject();
     }
-    public boolean validateToken(String token){
+   public boolean validateToken(String token){
         try{
             Jwts.parser().verifyWith(key()).build().parseSignedClaims(token);
             return true;
@@ -72,6 +77,5 @@ public class JwtUtils {
         }
         return false;
     }
-
 
 }
