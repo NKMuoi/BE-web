@@ -1,5 +1,6 @@
 package com.lazycode.lazyhotel.controller;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import com.lazycode.lazyhotel.exception.InvalidBookingRequestException;
 import com.lazycode.lazyhotel.exception.ResourceNotFoundException;
 import com.lazycode.lazyhotel.model.BookedRoom;
@@ -27,6 +28,7 @@ public class BookingController {
 
 
     @GetMapping("all-bookings")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<List<BookingResponse>> getAllBookings(){
         List<BookedRoom> bookings = bookingService.getAllBookings();
         List<BookingResponse> bookingResponses = new ArrayList<>();
@@ -62,6 +64,17 @@ public class BookingController {
         }catch(InvalidBookingRequestException e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    @GetMapping("/user/{email}/bookings")
+    public ResponseEntity<List<BookingResponse>> getBookingsByUserEmail(@PathVariable String email) {
+        List<BookedRoom> bookings = bookingService.getBookingsByUserEmail(email);
+        List<BookingResponse> bookingResponses = new ArrayList<>();
+        for (BookedRoom booking : bookings) {
+            BookingResponse bookingResponse = getBookingResponse(booking);
+            bookingResponses.add(bookingResponse);
+        }
+        return ResponseEntity.ok(bookingResponses);
     }
 
     @DeleteMapping("/booking/{bookingId}/delete")
