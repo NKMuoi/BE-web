@@ -77,7 +77,7 @@ public class HotelSecurityConfig {
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/auth/**", "/rooms/**", "/bookings/**").permitAll()
-                .requestMatchers("/roles/**").hasRole("ADMIN")
+                .requestMatchers("/api/roles/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .anyRequest().authenticated());
 
