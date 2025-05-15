@@ -16,7 +16,8 @@ public class WebConfig {
                 registry.addMapping("/**")
                         .allowedOrigins("*") // Cho phép tất cả origin (hoặc sửa thành domain cụ thể)
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                        .allowedHeaders("*");
+                        .allowedHeaders("*")
+                        .allowCredentials(true);
             }
         };
     }
